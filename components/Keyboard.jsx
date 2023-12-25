@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignalPerfect, faWifi3, faBattery, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/router';
 
 const TimeDisplay = ({ currentTime }) => <div className="text-sm ms-1 mt-1 font-medium">{currentTime}</div>;
 
@@ -13,11 +14,11 @@ const SignalBatteryIndicators = () => (
 );
 
 const NumericKeyboard = ({ handleButtonClick }) => (
-  <div className="grid grid-cols-3 gap-4 w-44 mt-auto mx-auto mb-5">
+  <div className="grid grid-cols-3 gap-4 w-44 mx-auto my-5">
     {[1, 2, 3, 4, 5, 6, 7, 8, 9, '*', 0, '#'].map((button) => (
       <button
         key={button}
-        className="rounded-full bg-neutral-200 p-3 text-center"
+        className="rounded-full bg-neutral-200 p-3 text-center rounded-full-touch"
         onClick={() => handleButtonClick(button)}
       >
         {button}
@@ -26,9 +27,9 @@ const NumericKeyboard = ({ handleButtonClick }) => (
   </div>
 );
 
-const CallButton = ({ handleButtonClick }) => (
+const CallButton = ({ handleCallClick }) => (
   <div className="flex justify-center mb-10">
-    <button className="rounded-full bg-green-500 text-white p-3" onClick={() => handleButtonClick('Call')}>
+    <button className="rounded-full bg-green-500 text-white p-3 call-touch" onClick={() => handleCallClick()}>
       <FontAwesomeIcon width={18} height={18} icon={faPhone} />
     </button>
   </div>
@@ -36,6 +37,8 @@ const CallButton = ({ handleButtonClick }) => (
 
 const Keyboard = () => {
   const [currentTime, setCurrentTime] = useState('');
+  const [clickedNumbers, setClickedNumbers] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
     const getCurrentISTTime = () => {
@@ -53,6 +56,13 @@ const Keyboard = () => {
 
   const handleButtonClick = (button) => {
     console.log(`Button clicked: ${button}`);
+    setClickedNumbers((prevNumbers) => prevNumbers + button);
+  };
+
+  const handleCallClick = () => {
+    if (clickedNumbers == '600') {
+      router.push('/login');
+    }
   };
 
   return (
@@ -64,8 +74,9 @@ const Keyboard = () => {
         </div>
         <div className="norch absolute top-0 z-50 left-1/2 transform -translate-x-1/2 h-6 w-24 bg-black rounded-b-lg"></div>
         <div className="absolute bottom-2 h-1 rounded-full w-24 left-1/2 z-10 bg-zinc-950 transform -translate-x-1/2"></div>
+        <input type="text" className="text-center mx-auto mt-auto text-xl" value={clickedNumbers} readOnly />
         <NumericKeyboard handleButtonClick={handleButtonClick} />
-        <CallButton handleButtonClick={handleButtonClick} />
+        <CallButton handleCallClick={handleCallClick} />
       </div>
     </div>
   );
