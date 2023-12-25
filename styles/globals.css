@@ -20,7 +20,33 @@
  background: red;
 } */
 
-
 *:focus {
   outline: none;
+}
+
+.iphone-frame {
+  border-radius: 40px;
+}
+
+.norch::before {
+  content: '';
+  position: absolute;
+  left: 30px;
+  top: 7px;
+  height: 4px;
+  width: 30px;
+  border-radius: 10px;
+  border: 0.03em solid rgb(51, 51, 51, 0.479);
+  box-shadow: inset 0px 0px 3px 0px rgb(51, 51, 51, 0.712);
+}
+
+.norch::after {
+  content: '';
+  position: absolute;
+  right: 20px;
+  top: 5px;
+  height: 7px;
+  width: 7px;
+  border-radius: 50%;
+  background-color: #333;
 }
