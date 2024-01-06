@@ -129,7 +129,7 @@ const Keyboard = () => {
   }, [startPhone, retryRegistration, userAgent]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-200">
+    <div className="flex items-center justify-center min-h-screen bg-gray-200 flex-col md:flex-row">
       <div className="iphone-frame border-8 border-black w-64 overflow-hidden h-[500px] bg-white relative flex flex-col">
         <div className="flex justify-between items-center px-2">
           <TimeDisplay currentTime={currentTime} />
