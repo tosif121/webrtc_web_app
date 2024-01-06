@@ -1,9 +1,12 @@
+import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 
 function Login() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     userName: '',
     password: '',
@@ -13,7 +16,12 @@ function Login() {
     userName: '',
     password: '',
   });
-  const router = useRouter();
+
+  const [passwordShown, setPasswordShown] = useState(false);
+
+  const togglePassword = () => {
+    setPasswordShown(!passwordShown);
+  };
   const NAME_REGEX = /^[a-zA-Z_ ]+$/;
 
   const handleInputChange = (e) => {
@@ -106,21 +114,36 @@ function Login() {
             </div>
 
             <div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-base font-medium leading-6 text-gray-900">
-                  Password
-                </label>
-              </div>
-              <div className="mt-2">
+              <label htmlFor="password" className="block text-base font-medium leading-6 text-gray-900">
+                Password
+              </label>
+              <div className="mt-2 relative">
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={(passwordShown && 'text') || 'password'}
                   autoComplete="current-password"
                   onChange={handleInputChange}
                   value={formData.password.replace(/\s+/g, '')}
                   className="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                {(passwordShown && (
+                  <FontAwesomeIcon
+                    icon={faEye}
+                    className="absolute right-4 cursor-pointer top-3"
+                    width={18}
+                    height={18}
+                    onClick={togglePassword}
+                  />
+                )) || (
+                  <FontAwesomeIcon
+                    icon={faEyeSlash}
+                    className="absolute right-4 cursor-pointer top-3"
+                    width={18}
+                    height={18}
+                    onClick={togglePassword}
+                  />
+                )}
                 {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
               </div>
             </div>
